@@ -1,26 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
-import { switchMap } from 'rxjs';
-import { User, userForm } from '../interfaces';
-import { UserService } from '../user.service';
+import { Subscription, switchMap } from 'rxjs';
+import { User} from 'src/app/interfaces';
+import { userForm } from 'src/app/constants';
+import { UserService } from 'src/app/services/user.service';
+import { UserValidators } from 'src/app/utils/user.validators';
+
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
 
-  public form!: FormGroup
-  public user!: User
-  public editMode = false
-  public formInputs: Array<string> = userForm
+  public form!: FormGroup;
+  public user!: User;
+  public editMode = false;
+  public formInputs: Array<string> = userForm;
+  private routSubscription!: Subscription;
 
   constructor(private route : ActivatedRoute, private userService: UserService) {}
 
   ngOnInit() {
-    this.route.params
+    this.routSubscription = this.route.params
     .pipe( switchMap( (params: Params) => {
       return this.userService.getById(params['id'])
     } ))
@@ -35,11 +39,11 @@ export class UserProfileComponent implements OnInit {
         zipcode: new FormControl(user.address.zipcode, [Validators.required,]),
         phone: new FormControl(user.phone, [
           Validators.required,
-          Validators.pattern(/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/gm),
+          UserValidators.invalidPhone,
           Validators.minLength(12),]),
         website: new FormControl(user.website, [
           Validators.required,
-          Validators.pattern(/^((https?|ftp)\:\/\/)?([a-z0-9]{1})((\.[a-z0-9-])|([a-z0-9-]))*\.([a-z]{2,6})(\/?)$/),
+          UserValidators.invalidWebsite,
           Validators.minLength(6)]),
         comment: new FormControl('',),
       })
@@ -47,7 +51,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   enableEditMode() {
-    this.editMode = true
+    this.editMode = true;
     for (let inp of this.formInputs) {
       document.getElementById(inp)?.removeAttribute('disabled')
     }
@@ -72,10 +76,14 @@ export class UserProfileComponent implements OnInit {
         website: this.form.value.website,
         comment: this.form.value.comment
       }
-      this.editMode = false
+      this.editMode = false;
       for (let inp of this.formInputs) {
         document.getElementById(inp)?.setAttribute('disabled', '')
       }
       console.log(JSON.stringify(this.user));
+    }
+
+    ngOnDestroy() {
+      this.routSubscription.unsubscribe();
     }
   }

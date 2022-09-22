@@ -5,7 +5,7 @@
   <div class="list">
     <div class="profile-header">
       <div class="title">User profile</div>
-        <button class="btn" *ngIf="!editMode" (click)="enableEditMode()">Edit</button>
+        <button class="btn btn-edit" *ngIf="!editMode" (click)="enableEditMode()">Edit</button>
     </div>
       <div class="profile-form">
         <form [formGroup]="form" (ngSubmit)="submit()">
