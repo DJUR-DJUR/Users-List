@@ -1,0 +1,23 @@
+<div class="main" *ngIf="users; else loading">
+  <div class="sidebar">
+    <div class="title sort">Sort:</div>
+    <button class="btn" (click)="sortByCity()">by city</button>
+    <button class="btn" (click)="sortByCompany()">by company</button>
+  </div>
+  <div class="list">
+    <div class="title">List of users</div>
+      <app-user *ngFor="let user of users"
+      [user]="user"></app-user>
+  </div>
+</div>
+<ng-template #loading>
+  <div class="wrap-loader">
+    <div class="loader">Loading</div>
+    <div class="container">
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+    </div>
+  </div>
+</ng-template>

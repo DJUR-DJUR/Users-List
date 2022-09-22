@@ -1,0 +1,35 @@
+<div class="main" *ngIf="user; else loading">
+  <div class="sidebar">
+    <button class="btn" routerLink="/user">Back to list</button>
+  </div>
+  <div class="list">
+    <div class="profile-header">
+      <div class="title">User profile</div>
+        <button class="btn" *ngIf="!editMode" (click)="enableEditMode()">Edit</button>
+    </div>
+      <div class="profile-form">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="profile-content">
+            <div class="form-control" *ngFor="let item of formInputs">
+              <label> {{item.charAt(0).toUpperCase() + item.slice(1)}} </label>
+              <input [id]="item" [formControlName]="item" type="text" [attr.disabled]="true">
+            </div>
+          </div>
+          <div class="profile-action">
+            <button class="btn submit" type="submit" [disabled]="form.invalid || !editMode">Send</button>
+          </div>
+        </form>
+      </div>
+  </div>
+</div>
+<ng-template #loading>
+  <div class="wrap-loader">
+    <div class="loader">Loading</div>
+    <div class="container">
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+    </div>
+  </div>
+</ng-template>

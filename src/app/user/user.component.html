@@ -1,0 +1,24 @@
+<div *ngIf="user; else loading">
+  <div class="card">
+    <div class="card-wrap">
+      <div class="card-title">
+        <div class="card-inner">Full Name:</div>
+        <div class="card-inner">City:</div>
+        <div class="card-inner">Company:</div>
+      </div>
+      <div class="card-content">
+        <div class="card-inner"> {{user.name}} </div>
+        <div class="card-inner"> {{user.address.city}} </div>
+        <div class="card-inner"> {{user.company.name}} </div>
+      </div>
+    </div>
+    <div class="card-action">
+      <a [routerLink]="['/user', user.id]">Detail</a>
+    </div>
+  </div>
+</div>
+<ng-template #loading>
+  <div class="wrap-loader">
+    <div class="loader">No Data</div>
+  </div>
+</ng-template>
