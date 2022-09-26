@@ -33,7 +33,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.form = new FormGroup({
         name: new FormControl({value: user.name, disabled: true}, [Validators.required,]),
         username: new FormControl({value: user.username, disabled: true}, [Validators.required,]),
-        email: new FormControl({value: user.email, disabled: true}, [Validators.required, Validators.email]),
+        email: new FormControl({value: user.email, disabled: true}, [
+          Validators.required,
+          UserValidators.invalidEmail,
+          Validators.minLength(6)]),
         street: new FormControl({value: user.address.street, disabled: true}, [Validators.required,]),
         city: new FormControl({value: user.address.city, disabled: true}, [Validators.required,]),
         zipcode: new FormControl({value: user.address.zipcode, disabled: true}, [Validators.required,]),

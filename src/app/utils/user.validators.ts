@@ -2,6 +2,16 @@ import { FormControl, FormControlName } from "@angular/forms";
 
 export class UserValidators {
 
+  static invalidEmail(control: FormControl): {[key: string]: boolean} | null {
+
+    const regExp = /.+@.+\..+/i;
+
+    if (!regExp.test(control.value)) {
+      return {invalidEmail: true}
+    }
+    return null
+  }
+
   static invalidPhone(control: FormControl): {[key: string]: boolean} | null {
 
     const regExp = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d{3,5}))?\s*$/gm;
