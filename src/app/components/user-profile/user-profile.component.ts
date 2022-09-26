@@ -31,17 +31,17 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     .subscribe( (user: User) => {
       this.user = user
       this.form = new FormGroup({
-        name: new FormControl(user.name, [Validators.required,]),
-        username: new FormControl(user.username, [Validators.required,]),
-        email: new FormControl(user.email, [Validators.required, Validators.email]),
-        street: new FormControl(user.address.street, [Validators.required,]),
-        city: new FormControl(user.address.city, [Validators.required,]),
-        zipcode: new FormControl(user.address.zipcode, [Validators.required,]),
-        phone: new FormControl(user.phone, [
+        name: new FormControl({value: user.name, disabled: true}, [Validators.required,]),
+        username: new FormControl({value: user.username, disabled: true}, [Validators.required,]),
+        email: new FormControl({value: user.email, disabled: true}, [Validators.required, Validators.email]),
+        street: new FormControl({value: user.address.street, disabled: true}, [Validators.required,]),
+        city: new FormControl({value: user.address.city, disabled: true}, [Validators.required,]),
+        zipcode: new FormControl({value: user.address.zipcode, disabled: true}, [Validators.required,]),
+        phone: new FormControl({value: user.phone, disabled: true}, [
           Validators.required,
           UserValidators.invalidPhone,
           Validators.minLength(12),]),
-        website: new FormControl(user.website, [
+        website: new FormControl({value: user.website, disabled: true}, [
           Validators.required,
           UserValidators.invalidWebsite,
           Validators.minLength(6)]),
@@ -52,9 +52,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   enableEditMode() {
     this.editMode = true;
-    for (let inp of this.formInputs) {
-      document.getElementById(inp)?.removeAttribute('disabled')
-    }
+    Object.keys(this.form.controls).forEach((controlName) => {
+      this.form.controls[controlName]['enable']()
+    })
   }
 
   submit() {
@@ -77,9 +77,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         comment: this.form.value.comment
       }
       this.editMode = false;
-      for (let inp of this.formInputs) {
-        document.getElementById(inp)?.setAttribute('disabled', '')
-      }
+
+      Object.keys(this.form.controls).forEach((controlName) => {
+        this.form.controls[controlName]['disable']()
+      });
+
       console.log(JSON.stringify(this.user));
     }
 

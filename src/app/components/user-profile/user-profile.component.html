@@ -12,7 +12,7 @@
           <div class="profile-content">
             <div class="form-control" *ngFor="let item of formInputs">
               <label> {{item.charAt(0).toUpperCase() + item.slice(1)}} </label>
-              <input [id]="item" [formControlName]="item" type="text" [attr.disabled]="true">
+              <input [formControlName]="item" type="text">
             </div>
           </div>
           <div class="profile-action">
