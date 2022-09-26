@@ -83,7 +83,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       console.log(JSON.stringify(this.user));
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
       this.routSubscription.unsubscribe();
     }
   }

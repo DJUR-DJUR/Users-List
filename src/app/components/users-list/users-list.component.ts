@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { User } from 'src/app/interfaces';
 import { UserService } from 'src/app/services/user.service';
 
@@ -8,14 +9,15 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.scss'],
 })
-export class UsersListComponent implements OnInit {
+export class UsersListComponent implements OnInit, OnDestroy {
 
   public users!: User[];
+  private serviceSubscription!: Subscription;
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(response => {
+    this.serviceSubscription = this.userService.getUsers().subscribe(response => {
       this.users = response
     })
   }
@@ -42,5 +44,9 @@ export class UsersListComponent implements OnInit {
       }
       return 0
     })
+  }
+
+  ngOnDestroy(): void {
+   this.serviceSubscription.unsubscribe()
   }
 }
