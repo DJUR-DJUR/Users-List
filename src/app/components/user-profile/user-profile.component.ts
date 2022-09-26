@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
-import { User} from 'src/app/interfaces';
-import { userForm } from 'src/app/constants';
+import { User} from 'src/app/shared/interfaces';
+import { userForm } from 'src/app/shared/constants';
 import { UserService } from 'src/app/services/user.service';
 import { UserValidators } from 'src/app/utils/user.validators';
 

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { User } from 'src/app/interfaces';
+import { User } from 'src/app/shared/interfaces';
 import { UserService } from 'src/app/services/user.service';
 
 
